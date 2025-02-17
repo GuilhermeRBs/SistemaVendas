@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Compras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .compra {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .compra a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .compra a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Histórico de Compras</h1>
+        <div class="compras">
+            {{#each compras}}
+            <div class="compra">
+                <h3><a href="/ingresso/{{this.ingresso._id}}">{{this.ingresso.nome}}</a></h3>
+                <p>Quantidade: {{this.quantity}}</p>
+                <p>Data: {{formatDate this.date}}</p>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</body>
+</html>

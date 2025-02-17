@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Ingresso</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Editar Ingresso</h1>
+        <form action="/api/ingressos/{{ingresso._id}}" method="POST">
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" value="{{ingresso.nome}}" required>
+            </div>
+            <div class="form-group">
+                <label for="preco">Preço</label>
+                <input type="number" id="preco" name="preco" value="{{ingresso.preco}}" required>
+            </div>
+            <div class="form-group">
+                <label for="data">Data</label>
+                <input type="date" id="data" name="data" value="{{formatDate ingresso.data 'YYYY-MM-DD'}}" required>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantidade</label>
+                <input type="number" id="quantity" name="quantity" value="{{ingresso.quantity}}" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Atualizar Ingresso</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

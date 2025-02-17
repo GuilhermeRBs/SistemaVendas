@@ -1,28 +1,32 @@
 const express = require('express');
 const router = express.Router();
-const Ingresso = require('../models/Ingresso');
 const Compra = require('../models/Compra');
+const Ingresso = require('../models/Ingresso');
 const { verifyToken } = require('../validation/authValidation');
 
-// Purchase ingressos
+// Comprar Ingresso
 router.post('/', verifyToken, async (req, res) => {
-    const { ingressoId, quantity } = req.body; // Recebe ingressoId e quantity do corpo da requisição
+    const { ingressoId, quantity } = req.body;
     try {
-        const user = req.user;
         const ingresso = await Ingresso.findById(ingressoId);
-        if (!ingresso || ingresso.quantity < quantity) {
-            return res.status(400).json({ message: 'Insufficient stock' });
+        if (!ingresso) return res.status(404).json({ message: 'Ingresso não encontrado' });
+
+        if (ingresso.quantity < quantity) {
+            return res.redirect(`/home?error=Quantidade solicitada excede o estoque disponível`);
         }
+
         ingresso.quantity -= quantity;
         await ingresso.save();
+
         const compra = new Compra({
-            user: user.id,
-            ingresso: ingresso.id,
-            quantity: quantity,
+            user: req.user.id,
+            ingresso: ingressoId,
+            quantity,
             date: new Date()
         });
+
         await compra.save();
-        res.status(201).json(compra);
+        res.redirect('/home');
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

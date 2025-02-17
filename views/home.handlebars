@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .ingressos {
+            margin-top: 20px;
+        }
+        .ingresso {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .ingressos-restantes {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .links {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .links a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bem-vindo à Home</h1>
+        <div class="links">
+            <a href="/historico">Histórico de Compras</a>
+            <a href="/logout">Logout</a>
+        </div>
+        {{#if error}}
+        <p class="error">{{error}}</p>
+        {{/if}}
+        <h2>Ingressos Disponíveis</h2>
+        <div class="ingressos-restantes">
+            <p>Ingressos restantes: {{totalIngressos}}</p>
+        </div>
+        <div class="ingressos">
+            {{#each ingressos}}
+            <div class="ingresso">
+                <h3>{{this.nome}}</h3>
+                <p>Preço: {{this.preco}}</p>
+                <p>Data: {{formatDate this.data 'DD/MM/YYYY'}}</p>
+                <p>Quantidade: {{this.quantity}}</p>
+                <form action="/api/compras" method="POST">
+                    <input type="hidden" name="ingressoId" value="{{this._id}}">
+                    <input type="number" name="quantity" placeholder="Quantidade" required>
+                    <button type="submit">Comprar</button>
+                </form>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</body>
+</html>

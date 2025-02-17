@@ -12,6 +12,10 @@ const ingressoSchema = new mongoose.Schema({
     data: {
         type: Date,
         required: true
+    },
+    quantity: {
+        type: Number,
+        required: true
     }
 });
 

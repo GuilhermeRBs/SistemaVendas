@@ -1,14 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const { verifyToken, verifyAdmin, registerValidation } = require('../validation/authValidation');
 
 
-// Register a new user (Admin only)
+// Registra novo usuário (somente Admin)
 router.post('/register', verifyToken, verifyAdmin,   async (req, res) => {
-    // Validate the data before creating a user
     const { error } = registerValidation(req.body);
     if (error) return res.status(400).json({ message: error.details[0].message });
 
@@ -20,7 +18,9 @@ router.post('/register', verifyToken, verifyAdmin,   async (req, res) => {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        user = new User({ username, email, password, isAdmin });
+        const hashedPassword = await bcrypt.hash(password, 10); // Hash da senha
+
+        user = new User({ username, email, password: hashedPassword, isAdmin });
         await user.save();
 
         res.status(201).json({ message: 'User registered successfully' });
